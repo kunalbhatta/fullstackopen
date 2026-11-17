@@ -1,0 +1,19 @@
+{
+  "name": "fullstackopen-bloglist-extension",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace client",
+    "build": "npm run build --workspace client -- --outDir ../server/dist --emptyOutDir",
+    "start": "npm start --workspace server",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  }
+}

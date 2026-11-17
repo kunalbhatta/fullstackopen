@@ -7,3 +7,4 @@
 - [Part 4 Blog List API](part4/bloglist#readme)
 - [Part 5 Blog List frontend](part5/bloglist#readme)
 - [Part 6 state management](part6#readme)
+- [Part 7 routed anecdotes and Blog List extension](part7#readme)
