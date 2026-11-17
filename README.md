@@ -10,3 +10,4 @@
 - [Part 7 routed anecdotes and Blog List extension](part7#readme)
 - [Part 8 GraphQL library](part8/library#readme)
 - [Part 9 TypeScript](part9#readme)
+- [Part 10 React Native](part10/rate-repository#readme)

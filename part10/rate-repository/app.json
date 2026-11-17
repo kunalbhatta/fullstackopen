@@ -1,0 +1,8 @@
+{
+  "expo": {
+    "name": "Rate Repository",
+    "slug": "rate-repository",
+    "version": "1.0.0",
+    "web": { "bundler": "metro" }
+  }
+}
