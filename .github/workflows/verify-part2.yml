@@ -1,0 +1,35 @@
+name: Verify Full Stack Open Part 2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'part2/**'
+      - '.github/workflows/verify-part2.yml'
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [courseinfo, phonebook, countries]
+
+    defaults:
+      run:
+        working-directory: part2/${{ matrix.app }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Build production app
+        run: npm run build
+      - name: Add DOM testing dependency
+        run: npm install --no-save --no-audit --no-fund jsdom@24.1.3
+      - name: Verify rendering and interactions
+        run: node ../verify.mjs ${{ matrix.app }}
