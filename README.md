@@ -13,3 +13,4 @@
 - [Part 10 React Native](part10/rate-repository#readme)
 - [Part 11 continuous integration](part11#readme)
 - [Part 12 containers](part12#readme)
+- [Part 13 relational databases](part13/bloglist-sql#readme)
