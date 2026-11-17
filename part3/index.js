@@ -1,3 +1,4 @@
+const path = require('node:path')
 const { randomUUID } = require('node:crypto')
 const express = require('express')
 const morgan = require('morgan')
@@ -13,6 +14,7 @@ let persons = [
 ]
 
 morgan.token('body', request => JSON.stringify(request.body))
+app.use(express.static(path.join(__dirname, 'dist')))
 app.use(express.json())
 app.use(morgan('tiny', { skip: request => request.method === 'POST' }))
 app.use(morgan(`${morgan.tiny} :body`, { skip: request => request.method !== 'POST' }))

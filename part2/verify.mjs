@@ -70,6 +70,7 @@ const compiled = await esbuild.build({
   entryPoints: [path.join(cwd, 'src/App.jsx')],
   bundle: true,
   write: false,
+  define: { 'import.meta.env.VITE_PHONEBOOK_API_URL': 'undefined' },
   format: 'cjs',
   platform: 'node',
   jsx: 'transform',

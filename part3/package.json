@@ -8,7 +8,8 @@
   },
   "scripts": {
     "start": "node index.js",
-    "dev": "node --watch index.js"
+    "dev": "node --watch index.js",
+    "build": "npm --prefix ../part2/phonebook ci --include=dev && npm --prefix ../part2/phonebook run build -- --mode part3 --outDir ../../part3/dist --emptyOutDir"
   },
   "dependencies": {
     "express": "^5.1.0",
