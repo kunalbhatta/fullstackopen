@@ -1,0 +1,19 @@
+:root { font-family: Geist, system-ui, sans-serif; color: #203331; background: #f5f7f5; }
+body { margin: 0; }
+main { max-width: 62rem; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+h1 { letter-spacing: -.045em; font-size: clamp(1.9rem, 4vw, 2.75rem); }
+h2 { margin-top: 0; }
+section, article { margin: 1rem 0; }
+article, form { padding: 1rem; border: 1px solid #d4e0db; border-radius: 8px; background: white; }
+form { max-width: 32rem; display: grid; gap: .85rem; }
+label:not(.choice) { display: grid; gap: .3rem; font-weight: 600; }
+fieldset { border: 1px solid #aabdb6; border-radius: 6px; }
+fieldset .choice { display: inline-flex; gap: .25rem; margin-right: .65rem; }
+input, textarea, select, button { font: inherit; }
+input:not([type=radio]), select, textarea, button { padding: .53rem .65rem; border: 1px solid #8ba49b; border-radius: 5px; }
+button { justify-self: start; cursor: pointer; background: #245644; color: white; }
+button:disabled { opacity: .55; cursor: wait; }
+a { color: #245644; }
+table { background: white; border-collapse: collapse; width: 100%; }
+td, th { text-align: left; border-bottom: 1px solid #d4e0db; padding: .65rem; }
+[role=alert] { color: #8c2922; }
