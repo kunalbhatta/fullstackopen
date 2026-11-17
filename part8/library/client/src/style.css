@@ -1,0 +1,18 @@
+:root { font-family: Geist, system-ui, sans-serif; color: #27362b; background: #f6f7f3; }
+body { margin: 0; }
+nav, .genre-filter { display: flex; flex-wrap: wrap; gap: .5rem; }
+nav { padding: .9rem max(1rem, calc((100vw - 56rem) / 2)); background: #203c30; }
+main { max-width: 56rem; padding: 1.5rem 1rem; margin: 0 auto; }
+h1 { letter-spacing: -.04em; }
+button { font: inherit; cursor: pointer; border: 1px solid #799184; border-radius: .35rem; padding: .45rem .75rem; color: #203c30; background: #f6f7f3; }
+button[aria-pressed=true] { background: #d1e8d9; }
+button:disabled { opacity: .6; cursor: wait; }
+table { border-collapse: collapse; margin: 1rem 0; width: 100%; text-align: left; background: white; }
+th, td { border-bottom: 1px solid #d8e2d9; padding: .65rem; }
+form { display: grid; gap: .85rem; max-width: 26rem; padding: 1rem; border: 1px solid #dce6df; border-radius: .55rem; background: white; }
+form h1, form h2 { margin: 0 0 .4rem; }
+label { display: grid; gap: .35rem; }
+input, select { font: inherit; padding: .55rem; border: 1px solid #799184; border-radius: .3rem; }
+form button { justify-self: start; }
+.notice { padding: .7rem; background: #e1f0e6; }
+.notice[role=alert] { background: #fae1dc; }
