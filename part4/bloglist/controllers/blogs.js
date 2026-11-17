@@ -24,7 +24,7 @@ module.exports = secret => {
     response.status(201).json(await blog.populate(creator))
   })
 
-  router.put('/:id', async (request, response) => {
+  router.put('/:id', requireUser, async (request, response) => {
     const { likes } = request.body ?? {}
     if (!Number.isInteger(likes) || likes < 0) {
       return response.status(400).json({ error: 'Likes must be a non-negative integer' })

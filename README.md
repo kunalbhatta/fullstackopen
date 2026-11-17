@@ -5,3 +5,4 @@
 - [Part 2 exercises](part2)
 - [Part 3 Phonebook setup](part3#readme)
 - [Part 4 Blog List API](part4/bloglist#readme)
+- [Part 5 Blog List frontend](part5/bloglist#readme)

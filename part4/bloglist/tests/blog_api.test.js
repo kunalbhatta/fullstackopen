@@ -66,10 +66,11 @@ test('creation requires title and URL and rejects invalid likes', async () => {
 })
 
 test('updating likes returns and persists the current total', async () => {
-  const { body } = await api.put(`/api/blogs/${blogId}`).send({ likes: 12 }).expect(200)
+  const { body } = await api.put(`/api/blogs/${blogId}`).auth(peerToken, { type: 'bearer' }).send({ likes: 12 }).expect(200)
   assert.equal(body.likes, 12)
   assert.equal((await Blog.findById(blogId)).likes, 12)
-  await api.put(`/api/blogs/${blogId}`).send({ likes: -1 }).expect(400)
+  await api.put(`/api/blogs/${blogId}`).auth(ownerToken, { type: 'bearer' }).send({ likes: -1 }).expect(400)
+  await api.put(`/api/blogs/${blogId}`).send({ likes: 13 }).expect(401)
 })
 
 test('only the creator can remove a blog and deleted blogs disappear from the user', async () => {

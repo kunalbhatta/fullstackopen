@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Form } from '../styles'
 
 export function LoginForm({ onLogin, busy }) {
   const [username, setUsername] = useState('')
@@ -10,11 +11,11 @@ export function LoginForm({ onLogin, busy }) {
   }
 
   return (
-    <form onSubmit={submit}>
+    <Form onSubmit={submit}>
       <label>Username <input autoComplete="username" value={username} onChange={event => setUsername(event.target.value)} required /></label>
       <label>Password <input type="password" autoComplete="current-password" value={password} onChange={event => setPassword(event.target.value)} required /></label>
       <button disabled={busy}>Log in</button>
-    </form>
+    </Form>
   )
 }
 
@@ -29,11 +30,11 @@ export function BlogForm({ onCreate, busy }) {
   }
 
   return (
-    <form onSubmit={submit}>
+    <Form onSubmit={submit}>
       <label>Title <input value={title} onChange={event => setTitle(event.target.value)} required /></label>
       <label>Author <input value={author} onChange={event => setAuthor(event.target.value)} required /></label>
       <label>URL <input type="url" value={url} onChange={event => setUrl(event.target.value)} required /></label>
       <button disabled={busy}>Create</button>
-    </form>
+    </Form>
   )
 }
