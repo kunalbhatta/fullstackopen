@@ -7,12 +7,21 @@
     "node": ">=22.13.0"
   },
   "scripts": {
-    "start": "node index.js",
-    "dev": "node --watch index.js",
-    "build": "npm --prefix ../part2/phonebook ci --include=dev && npm --prefix ../part2/phonebook run build -- --mode part3 --outDir ../../part3/dist --emptyOutDir"
+    "start": "node --env-file-if-exists=.env index.js",
+    "dev": "node --watch --env-file-if-exists=.env index.js",
+    "build": "npm --prefix ../part2/phonebook ci --include=dev && npm --prefix ../part2/phonebook run build -- --mode part3 --outDir ../../part3/dist --emptyOutDir",
+    "db": "node --env-file-if-exists=.env mongo.js",
+    "lint": "eslint ."
   },
   "dependencies": {
     "express": "^5.1.0",
+    "mongoose": "^8.19.1",
     "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^5.5.0",
+    "eslint": "^10.15.0",
+    "globals": "^16.4.0"
   }
 }

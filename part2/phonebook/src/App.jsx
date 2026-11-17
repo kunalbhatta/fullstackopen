@@ -49,7 +49,7 @@ const App = () => {
           setPersons(current => current.filter(person => person.id !== existing.id))
           notify(`Information of ${existing.name} has already been removed from server`, 'error')
         } else {
-          notify(`Could not update ${existing.name}`, 'error')
+          notify(error.response?.data?.error || `Could not update ${existing.name}`, 'error')
         }
       }
       return
@@ -61,8 +61,8 @@ const App = () => {
       setNewName('')
       setNewNumber('')
       notify(`Added ${name}`)
-    } catch {
-      notify(`Could not add ${name}`, 'error')
+    } catch (error) {
+      notify(error.response?.data?.error || `Could not add ${name}`, 'error')
     }
   }
 
