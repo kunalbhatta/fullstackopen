@@ -1,3 +1,4 @@
+import React from 'react'
 // Final state of Course Information, exercises 1.1–1.5.
 // App owns all the data, and passes it through props.
 

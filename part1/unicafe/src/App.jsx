@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 // Final state of Unicafe, exercises 1.6–1.11 (including 1.11*).
 const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>

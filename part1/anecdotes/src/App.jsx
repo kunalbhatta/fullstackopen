@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 // Final state of Anecdotes, exercises 1.12–1.14 (including starred exercises).
 const anecdotes = [
