@@ -146,7 +146,10 @@ if (app === 'phonebook') {
   assert.ok(body().includes('Mary Smith 222'), 'PUT updates a matching person')
   const button=[...rootNode.querySelectorAll('button')].find(el=>el.textContent==='delete'&&el.parentElement.textContent.includes('Mary Smith'))
   await click(button)
-  assert.ok(!body().includes('Mary Smith'), 'DELETE removes person')
+  assert.ok(
+    ![...rootNode.querySelectorAll('button')].some(el => el.textContent === 'delete' && el.parentElement.textContent.includes('Mary Smith')),
+    'DELETE removes person from the list (a temporary success message can still mention the name)'
+  )
   console.log('PASS Phonebook: GET, filter, POST, PUT, DELETE, status notifications')
 }
 
