@@ -12,3 +12,4 @@
 - [Part 9 TypeScript](part9#readme)
 - [Part 10 React Native](part10/rate-repository#readme)
 - [Part 11 continuous integration](part11#readme)
+- [Part 12 containers](part12#readme)

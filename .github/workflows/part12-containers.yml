@@ -1,0 +1,55 @@
+name: Part 12 container smoke tests
+on:
+  push:
+    branches: [main, fullstackopen-practice]
+    paths: ['part12/**', '.github/workflows/part12-containers.yml']
+  pull_request:
+    paths: ['part12/**', '.github/workflows/part12-containers.yml']
+permissions:
+  contents: read
+jobs:
+  compose:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - app: todo-app
+            file: docker-compose.yml
+            port: 8080
+          - app: todo-app
+            file: docker-compose.dev.yml
+            port: 8081
+          - app: my-app
+            file: docker-compose.yml
+            port: 8090
+          - app: my-app
+            file: docker-compose.dev.yml
+            port: 8091
+    defaults:
+      run:
+        working-directory: part12/${{ matrix.app }}
+    env:
+      COMPOSE_FILE: ${{ matrix.file }}
+      PORT: ${{ matrix.port }}
+      APP: ${{ matrix.app }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker compose config --quiet
+      - run: docker compose up -d --build --wait
+      - name: Check the frontend and API through Nginx
+        run: |
+          root="http://127.0.0.1:$PORT"
+          curl --fail --retry 15 --retry-all-errors --silent "$root/" >/dev/null
+          if [ "$APP" = 'todo-app' ]; then
+            curl --fail --retry 15 --retry-all-errors --silent "$root/api/todos" | jq -e 'type == "array"'
+            curl --fail --silent -H 'Content-Type: application/json' --data '{"text":"Smoke test todo"}' "$root/api/todos" | jq -e '.done == false'
+            curl --fail --silent "$root/api/statistics" | jq -e '.added_todos >= 1'
+          else
+            curl --fail --retry 15 --retry-all-errors --silent "$root/api/persons" | jq -e 'type == "array"'
+            curl --fail --silent -H 'Content-Type: application/json' --data '{"name":"Example Person","number":"09-1234567"}' "$root/api/persons" | jq -e '.number == "09-1234567"'
+          fi
+      - if: failure()
+        run: docker compose logs --no-color
+      - if: always()
+        run: docker compose down --volumes

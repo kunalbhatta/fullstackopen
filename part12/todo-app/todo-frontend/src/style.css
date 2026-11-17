@@ -1,0 +1,10 @@
+:root { font: 1rem Geist, system-ui, sans-serif; background: #f4f7f2; color: #193a2c; }
+main { max-width: 42rem; margin: 2rem auto; padding: 0 1rem; }
+ul { padding: 0; list-style: none; }
+li { display: flex; justify-content: space-between; align-items: center; gap: .7rem; padding: .7rem; margin: .5rem 0; border: 1px solid #cfddd2; border-radius: 6px; background: white; }
+form { display: flex; flex-wrap: wrap; align-items: end; gap: .65rem; }
+form label { display: grid; gap: .35rem; }
+input, button { font: inherit; }
+button { cursor: pointer; background: #275b46; color: white; border: 0; border-radius: 6px; padding: .5rem .7rem; }
+button:disabled { opacity: .55; }
+[role=alert] { color: #992e24; }
