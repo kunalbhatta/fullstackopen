@@ -7,8 +7,3 @@ declare module 'next-auth' {
   interface User { username?: string }
 }
 declare module 'next-auth/jwt' { interface JWT { userId?: string; username?: string } }
-declare module '*.mdx' {
-  import type { ComponentType } from 'react'
-  const MDXComponent: ComponentType<Record<string, unknown>>
-  export default MDXComponent
-}
