@@ -10,6 +10,22 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: practice
+          POSTGRES_PASSWORD: practice
+          POSTGRES_DB: bloglist
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U practice -d bloglist"
+          --health-interval 10s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://practice:practice@localhost:5432/bloglist
+      NEXTAUTH_SECRET: local-test-only-secret-not-for-deployment
+      NEXTAUTH_URL: http://localhost:3000
+      CI: true
     defaults:
       run:
         working-directory: part14/bloglist
@@ -26,7 +42,15 @@ jobs:
         run: npm run lint
       - name: Build
         run: npm run build
-        env:
-          DATABASE_URL: postgresql://practice:practice@localhost/practice
-          NEXTAUTH_SECRET: build-only-local-secret-not-for-deployment
-          NEXTAUTH_URL: http://localhost:3000
+      - name: Apply test database schema
+        run: npx drizzle-kit push --force
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run Helsinki end-to-end tests
+        run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: part14-playwright-report
+          path: part14/bloglist/playwright-report/
+          retention-days: 7

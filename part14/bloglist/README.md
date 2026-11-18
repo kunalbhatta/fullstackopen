@@ -1,22 +1,19 @@
 # Full Stack Open — Part 14 · Next.js Blog List
 
-Independent study implementation of the 2026 Next.js Blog List (exercises 1–23): App Router, Server Components and Server Actions, title search, Drizzle ORM/PostgreSQL, bcrypt credentials and NextAuth v5, validation with useActionState, Tailwind CSS and notification context, user profiles, reading lists, API tokens, MDX homepage, and development-only testing endpoints.
+Independent practice implementation of Next.js Blog List exercises 1–23. Includes the App Router and Server Actions, Drizzle ORM/PostgreSQL, credentials auth, form validation, Tailwind, notifications, personal reading lists, API tokens, MDX homepage and development-only API testing endpoints.
 
-## Local setup
+## Run
 
-1. Use Node.js 22.12+; run npm install in this folder.
-2. Create a Neon PostgreSQL database. Copy .env.example to .env.local and configure DATABASE_URL, NEXTAUTH_SECRET and NEXTAUTH_URL.
-3. Run npm run db:push, then npm run dev and visit http://localhost:3000.
-4. Register an account; create, search and like blogs; try reading lists and token regeneration on /me. The /api/me route accepts an Authorization Bearer token generated on the profile.
+Use Node.js 22.12+. In this directory, run npm install. Copy .env.example to .env.local and set DATABASE_URL to either your local PostgreSQL instance or a Neon/Postgres database. Set a random NEXTAUTH_SECRET and NEXTAUTH_URL=http://localhost:3000. Run npm run db:push and then npm run dev.
 
-## Checks
+Visit http://localhost:3000. Register an account, create blogs, like them, search by title, save other people's blogs, mark posts as read, and generate API tokens from the personal profile page.
 
-Run npm run typecheck, npm run lint, and npm run build. For the official Playwright tests use npm run test:e2e after setting up a **separate test database** in .env.test. The test suite deletes data through the development-only reset route. Never use a production database for this test.
+## Verify
 
-The Playwright suite and configuration were taken from the University of Helsinki's public next-js-tests repository, with test content retained. Source: https://github.com/fullstack-hy2020/next-js-tests . For migration history, run npm run db:generate and review the generated SQL before applying it.
+GitHub Actions uses an isolated PostgreSQL 16 service to run TypeScript, ESLint, a production build, Drizzle schema setup, and Helsinki's official browser tests. You can run the same tests locally with npm run test:e2e after configuring a dedicated test database. The test suite DELETEs all app data between tests — never run it against a real account's database.
 
-## External setup not performed
+The Playwright fixtures and configuration are from the official Helsinki repository: https://github.com/fullstack-hy2020/next-js-tests .
 
-Exercise 7: deploy via Vercel. Exercise 8: provision Neon and connect Vercel environment variables. Exercise 24: set database/auth secrets in GitHub Actions and verify browser test success. Exercise 25: submit your repository URL via the course system (intentionally not done as this is practice only).
+## External work
 
-No credentials are committed. A successful local database integration or external deployment has not been verified in this session.
+Exercise 7 requires a Vercel deployment; hosting has not been set up. Exercise 8's Neon deployment is likewise account-specific, although the schema and database code are provided. Exercise 25 is course submission and is intentionally skipped because this is personal practice.
