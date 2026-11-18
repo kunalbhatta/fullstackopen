@@ -10,6 +10,7 @@ permissions:
   contents: read
 jobs:
   verify:
+    name: Pokedex verification
     runs-on: ubuntu-latest
     defaults:
       run:

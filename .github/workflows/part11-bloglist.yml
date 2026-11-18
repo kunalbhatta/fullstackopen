@@ -10,6 +10,7 @@ permissions:
   contents: read
 jobs:
   verify:
+    name: Blog List verification
     runs-on: ubuntu-latest
     services:
       mongo:
