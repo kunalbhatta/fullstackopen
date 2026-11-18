@@ -1,0 +1,52 @@
+name: Part 11 Blog List pipeline
+on:
+  push:
+    branches: [main, fullstackopen-practice]
+    paths: ['part7/bloglist/**', '.github/workflows/part11-bloglist.yml']
+  pull_request:
+    paths: ['part7/bloglist/**', '.github/workflows/part11-bloglist.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    name: Blog List verification
+    runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo:7
+        ports: ['27017:27017']
+        options: >-
+          --health-cmd "mongosh --quiet --eval 'db.adminCommand({ping:1}).ok'"
+          --health-interval 5s --health-timeout 5s --health-retries 12
+    defaults:
+      run:
+        working-directory: part7/bloglist
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: part7/bloglist/package-lock.json
+      - run: npm ci
+      - run: npm run format:check
+      - run: npm run build
+      - run: npm test --workspace client
+      - run: npm test --workspace server
+        env:
+          TEST_MONGODB_URI: mongodb://127.0.0.1:27017/ci_bloglist_test
+  deploy:
+    needs: verify
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == format('refs/heads/{0}', github.event.repository.default_branch) &&
+      vars.BLOGLIST_RELEASE_ENABLED == 'true' &&
+      !contains(toJSON(github.event.commits.*.message), '#skip')
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.BLOGLIST_RENDER_DEPLOY_HOOK }}
+        run: |
+          test -n "$RENDER_DEPLOY_HOOK"
+          curl --fail-with-body --silent --show-error --request POST "$RENDER_DEPLOY_HOOK" >/dev/null

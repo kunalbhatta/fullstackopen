@@ -1,0 +1,86 @@
+name: Part 11 Pokedex pipeline
+on:
+  push:
+    branches: [main, fullstackopen-practice]
+    paths: ['part11/pokedex/**', '.github/workflows/part11-pokedex.yml']
+  pull_request:
+    paths: ['part11/pokedex/**', '.github/workflows/part11-pokedex.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    name: Pokedex verification
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: part11/pokedex
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: part11/pokedex/package-lock.json
+      - name: Identify the checkout
+        run: |
+          printf '%s\n' 'Hello world'
+          date -u
+          ls -al
+      - run: npm ci
+      - run: npm run eslint
+      - run: npm run build
+      - run: npm test -- --runInBand
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+  release:
+    needs: verify
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == format('refs/heads/{0}', github.event.repository.default_branch) &&
+      vars.POKEDEX_RELEASE_ENABLED == 'true' &&
+      !contains(toJSON(github.event.commits.*.message), '#skip')
+    runs-on: ubuntu-latest
+    concurrency:
+      group: pokedex-release
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Deploy on Render
+        env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.POKEDEX_RENDER_DEPLOY_HOOK }}
+        run: |
+          test -n "$RENDER_DEPLOY_HOOK"
+          curl --fail-with-body --silent --show-error --request POST "$RENDER_DEPLOY_HOOK" > /dev/null
+      - name: Tag the release
+        run: |
+          current=$(git tag --list 'pokedex-v0.1.*' --sort=-version:refname | head -1)
+          patch=${current##*.}
+          tag="pokedex-v0.1.$((${patch:-0} + 1))"
+          git tag "$tag" "$GITHUB_SHA"
+          git push origin "refs/tags/$tag"
+      - name: Notify deployment
+        env:
+          WEBHOOK: ${{ secrets.POKEDEX_DISCORD_WEBHOOK }}
+        run: |
+          if [ -n "$WEBHOOK" ]; then
+            jq -n --arg url "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+              '{content: ("Pokedex deployment triggered. " + $url)}' |
+              curl --fail --silent --show-error -H 'Content-Type: application/json' --data-binary @- "$WEBHOOK" >/dev/null
+          fi
+  notify-build-failure:
+    needs: verify
+    if: failure() && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          WEBHOOK: ${{ secrets.POKEDEX_DISCORD_WEBHOOK }}
+        run: |
+          if [ -n "$WEBHOOK" ]; then
+            jq -n --arg sha "$GITHUB_SHA" --arg url "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+              '{content: ("Pokedex checks failed for " + $sha + ". " + $url)}' |
+              curl --fail --silent --show-error -H 'Content-Type: application/json' --data-binary @- "$WEBHOOK" >/dev/null
+          fi

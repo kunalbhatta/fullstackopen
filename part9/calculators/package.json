@@ -1,0 +1,16 @@
+{
+  "name": "calculators",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "ts-node-dev --respawn src/index.ts",
+    "build": "tsc",
+    "test": "node --import tsx --test src/*.test.ts",
+    "calculateBmi": "node --import tsx src/bmiCalculator.ts",
+    "calculateExercises": "node --import tsx src/exerciseCalculator.ts"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}

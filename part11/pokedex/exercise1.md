@@ -1,0 +1,7 @@
+# A CI pipeline for a Python team
+
+For a six-person Python team preparing its first release, I would run the same checks on a clean checkout for every pull request. Ruff would handle linting and formatting checks, and pytest would run unit and integration tests. Integration tests that need PostgreSQL could start an isolated database for the job and apply the app’s migrations before testing. I would build a Python wheel with `python -m build`, then install that wheel in a fresh environment and run a smoke test. This last step catches packaging errors such as missing data files that can be invisible when tests import straight from the source tree.
+
+GitLab CI/CD, CircleCI, and Azure Pipelines are alternatives for running those jobs. I would compare them by repository integration, runner availability, caching, access controls, and the cost of running parallel jobs. The team should require the checks to pass before merging. A separate release job should publish an artifact only for an approved tag, with credentials scoped to that job.
+
+I would start with cloud-hosted runners because a small team benefits from clean machines and managed updates. Self-hosting might make sense if tests require private network access, hardware such as GPUs, or an operating system unavailable on hosted runners. Before deciding, I would ask what data the tests use, what dependencies require internal access, how long builds take, and how many run concurrently. I would also compare the support effort of maintaining runners with the hosted service’s total cost.
