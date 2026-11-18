@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { auth } from '@/auth'
-import { logoutUser } from './actions'
+import LogoutButton from '@/components/LogoutButton'
 import { Notifications } from '@/components/Notifications'
 import './globals.css'
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ export default async function RootLayout({ children }: Readonly<{children: React
         {session?.user ? <>
           <Link href="/blogs/new" className="nav-link">create</Link>
           <Link href="/me" className="nav-link">me</Link>
-          <form action={logoutUser}><button type="submit" className="nav-link">logout</button></form>
+          <LogoutButton />
         </> : <>
           <Link href="/login" className="nav-link">login</Link>
           <Link href="/register" className="nav-link">register</Link>
